@@ -1,7 +1,7 @@
 package zeball.esben.main;
 
 import javafx.application.Application;
-import zeball.esben.main.window.Frame;
+import zeball.esben.main.frame.Frame;
 
 public class Launcher {
 	

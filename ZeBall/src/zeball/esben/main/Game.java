@@ -1,25 +1,18 @@
 package zeball.esben.main;
 
-import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import zeball.esben.main.object.Ball;
 
 public class Game extends Canvas implements Runnable {
-	
-	//Ball variables
-	private double mx = 0, my = 0;
-	private float x = 0, y = 0;
-	private int width = 100, height = 100;
-	private double speedX = 0, speedY = 0;
-	//private int speed = 5;
-	private int buffer = 100;
 	
 	private boolean running = false;
 	private Thread game;
 	private static final int WIDTH = 800, HEIGHT = 500;
 	private GraphicsContext g;
+	
+	private Ball ball;
 	
 	public Game() {
 		super(WIDTH, HEIGHT);
@@ -27,15 +20,7 @@ public class Game extends Canvas implements Runnable {
 	
 	private void init() {
 		g = getGraphicsContext2D();
-		addEventHandler(MouseEvent.MOUSE_MOVED, new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent e) {
-				mx = e.getX();
-				my = e.getY();
-			}
-			
-		});
+		ball = new Ball(this);
 	}
 	
 	@Override
@@ -70,9 +55,7 @@ public class Game extends Canvas implements Runnable {
 			if (System.currentTimeMillis() - timer >= 1000) {
 				timer += 1000;
 				System.out.println("TICKS: " + ticks);
-				ticks = 0;
-				
-				System.out.println(x);
+				ticks = 0;				
 			}
 			
 			try {
@@ -88,33 +71,7 @@ public class Game extends Canvas implements Runnable {
 	
 	public void tick() {
 		
-		double deltaX = mx - (x + width / 2);
-		double deltaY = my - (y + height / 2);
-		double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-		double difference = buffer - distance;
-		
-		if (difference > 0) {
-			speedX = deltaX / distance * difference;
-			speedY = deltaY / distance * difference;
-		} else {
-			speedX = 0;
-			speedY = 0;
-		}
-		
-		x -= speedX;
-		y -= speedY;
-		
-		if (x <= 0) {
-			x = 0;
-		} else if (x >= getWidth() - width) {
-			x = (float) (getWidth() - width);
-		}
-		
-		if (y < 0) {
-			y = 0;
-		} else if (y >= getHeight() - height) {
-			y = (float) (getHeight() - height);
-		}
+		ball.tick();
 		
 	}
 	
@@ -123,8 +80,8 @@ public class Game extends Canvas implements Runnable {
 		g.clearRect(0, 0, getWidth(), getHeight());
 		
 		//
-		
-		g.fillOval(x, y, width, height);
+				
+		ball.render(g);
 		
 		//
 		

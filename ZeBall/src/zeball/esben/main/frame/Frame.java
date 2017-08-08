@@ -1,4 +1,4 @@
-package zeball.esben.main.window;
+package zeball.esben.main.frame;
 
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -17,7 +17,7 @@ public class Frame extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 
-		primaryStage.setTitle("ZeBall");
+		primaryStage.setTitle("Ze Ball");
 		
 		Group root = new Group();
 		
@@ -26,6 +26,7 @@ public class Frame extends Application {
 		root.getChildren().add(game);
 		
 		primaryStage.setScene(new Scene(root, 800, 500));
+		primaryStage.sizeToScene();
 		primaryStage.setResizable(false);
 		primaryStage.show();
 		game.start();
